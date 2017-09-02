@@ -7,7 +7,7 @@ bin/shortest_path: bin/shortest_path.o bin/test.o
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -o $@ $^
 
-bin/shortest_path.o: src/shortest_path.cc include/graph.hh
+bin/shortest_path.o: src/shortest_path.cc include/pairing_heap.hpp include/graph.hh
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -c -o $@ $<
 

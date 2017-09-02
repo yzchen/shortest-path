@@ -2,6 +2,8 @@
 #include <queue>
 #include <vector>
 #include <utility>
+
+#include "pairing_heap.hpp"
 #include "graph.hh"
 
 using namespace std;
@@ -24,7 +26,11 @@ void Dijkstra(Graph *G, int source) {
     (G->nodes)[source] -> d = 0;
     (G->nodes)[source] -> mask = 1;
 
-    priority_queue<Node *, vector<Node *>, compare_min_first> Q;
+    // priority_queue<Node *, vector<Node *>, compare_min_first> Q;
+
+    // using self implement pair heap other than stl priority queue
+    // pair heap is a simple implementation of fibonacci heap 
+    PairingHeap Q;
 
     Q.push(G->nodes[source]);
 

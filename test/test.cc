@@ -1,5 +1,9 @@
-#include "graph.hh"
 #include <utility>
+#include <string>
+#include <ctime>
+#include <iostream>
+
+#include "graph.hh"
 
 using namespace std;
 
@@ -40,7 +44,25 @@ void construct(Graph *G) {
 int main(int argc, char const *argv[]) {
     Graph *G = new Graph();
     construct(G);
-    Dijkstra(G, 0);
+
+    clock_t start, end;
+
+    string algorithm(argv[1]);
+    if (algorithm.compare("dijstra") == 0) {
+        start = clock();
+        Dijkstra(G, 0);
+        end = clock();
+
+        cout << "\n" << "Dijkstra algorithm's time is :" << ((double)(end - start)) / CLOCKS_PER_SEC << " s" << endl;
+    }
+    else if (algorithm.compare("spfa") == 0){
+        start = clock();
+        Spfa(G, 0);
+        end = clock();
+
+        cout << "\n" << "Spfa algorithm's time is :" << ((double)(end - start)) / CLOCKS_PER_SEC << " s" << endl;
+    }
+
     print_node(G);
     return 0;
 }

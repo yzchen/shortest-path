@@ -1,3 +1,6 @@
+#ifndef _GRAGH_H_
+#define _GRAGH_H_
+
 #include <vector>
 #include <utility>
 
@@ -30,3 +33,5 @@ void print_node(Graph *G);
 
 void Dijkstra(Graph *G, int source);
 void Spfa(Graph *G, int source);
+
+#endif

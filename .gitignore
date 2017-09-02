@@ -1,3 +1,5 @@
 dijkstra
 spfa
 .DS_Store
+*.o
+bin/shortest_path

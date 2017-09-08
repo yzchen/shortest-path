@@ -2,4 +2,7 @@ dijkstra
 spfa
 .DS_Store
 *.o
-bin/shortest_path
+.idea
+shortest-path-cpp/bin/shortest_path
+shortest-path-scala/project
+shortest-path-scala/target

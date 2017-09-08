@@ -1,25 +1,17 @@
-Introduction :
+## Introduction :
 
 This is the group project for algorithm in 2017 fall.
 
-Our topic is shortest path in nonnegative weighted directed graph, algorithms used are [dijkstra algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) and [spfa algorithm](https://en.wikipedia.org/wiki/Shortest_Path_Faster_Algorithm).
+Our topic is shortest path in nonnegative weighted directed graph.
 
-Usage :
+Algorithms used here are [dijkstra algorithm](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm) and [spfa algorithm](https://en.wikipedia.org/wiki/Shortest_Path_Faster_Algorithm).
 
-- build
+## Subfolder :
 
-    `make`
+- shortest-path-cpp
 
-- clean previous build
+    cpp implementation
 
-    `make clean`
+- shortest-path-scala
 
-- run test
-
-    - run dijkstra algorithm
-
-    `./bin/shortest_path dijkstra`
-
-    - run spfa algorithm
-
-    `./bin/shortest_path spfa`
+    scala implementation

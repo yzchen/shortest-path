@@ -1,7 +1,7 @@
 package shortestPath
 
 class Node (val name: String, var neighbors: List[(String, Int)] = List(),
-            var distance: Int = Int.MaxValue, var previous: Option[Node] = None,
+            var distance: Int = Int.MaxValue, var previous: String = "",
             var mask: Boolean = false) {
 
     override def toString: String = "[" + "name = " + name + ", neighbors = " + getNeighborsName(neighbors) +

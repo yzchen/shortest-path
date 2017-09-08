@@ -11,6 +11,22 @@ class shortestPath {
         }
     }
 
+    def printPath(graph: Graph) = {
+        def printPre(nodeName: String): Unit = {
+            if (graph(nodeName).previous != "") {
+                printPre(graph(nodeName).previous)
+                print(" -> ")
+            }
+            print(graph(nodeName).name)
+        }
+
+        for (node <- graph) {
+            print(node._1 + " ( d : " + graph(node._1).distance + " ) : ")
+            printPre(node._1)
+            println()
+        }
+    }
+
     def dijkstra(graph: Graph, source: String): Unit = {
 
         val q = new mutable.PriorityQueue[String]
@@ -23,12 +39,13 @@ class shortestPath {
 
             val uName = q.dequeue()
 
-            println(uName + " : " + graph(uName).distance)
+//            println(uName + " : " + graph(uName).distance)
 
             for (neighbor <- graph(uName).neighbors) {
                 if (graph(neighbor._1).distance > graph(uName).distance + neighbor._2) {
                     graph(neighbor._1).distance = graph(uName).distance + neighbor._2
-                    println("  -->" + neighbor._1 + " : " + graph(neighbor._1).distance)
+                    graph(neighbor._1).previous = uName
+//                    println("  -->" + neighbor._1 + " : " + graph(neighbor._1).distance)
 
                     if (!graph(neighbor._1).mask) {
                         q.enqueue(neighbor._1)
@@ -53,12 +70,13 @@ class shortestPath {
             val uName = q.dequeue()
             graph(uName).mask = false
 
-            println(uName + " : " + graph(uName).distance)
+//            println(uName + " : " + graph(uName).distance)
 
             for (neighbor <- graph(uName).neighbors) {
                 if (graph(neighbor._1).distance > graph(uName).distance + neighbor._2) {
                     graph(neighbor._1).distance = graph(uName).distance + neighbor._2
-                    println("  -->" + neighbor._1 + " : " + graph(neighbor._1).distance)
+                    graph(neighbor._1).previous = uName
+//                    println("  -->" + neighbor._1 + " : " + graph(neighbor._1).distance)
 
                     if (!graph(neighbor._1).mask) {
                         q.enqueue(neighbor._1)
@@ -88,8 +106,9 @@ object GraphRun extends shortestPath{
         g("D").neighbors = ("B", 2) :: ("C", 3) :: ("E", 2) :: Nil
         g("E").neighbors = ("D", 2) :: Nil
 
-//        dijkstra(g, "A")
-        spfa(g, "A")
-        printGraph(g)
+        dijkstra(g, "A")
+//        spfa(g, "A")
+        printPath(g)
     }
+
 }

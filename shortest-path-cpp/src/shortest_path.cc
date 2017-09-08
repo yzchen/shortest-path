@@ -15,6 +15,22 @@ void print_node(Graph *G) {
     }
 }
 
+void print_pre(Node *node) {
+    if (node->previous != NULL) {
+        print_pre(node->previous);
+        cout << " -> ";
+    }
+    cout << node->value;
+}
+
+void print_path(Graph *G) {
+    for (vector<Node *>::iterator nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
+        cout << (*nodeit)->value << " ( d : " << (*nodeit)->d << " ) : ";
+        print_pre(*nodeit);
+        cout<<endl;
+    }
+}
+
 void Dijkstra(Graph *G, int source) {
     vector<Node *>::iterator nodeit;
 
@@ -29,7 +45,7 @@ void Dijkstra(Graph *G, int source) {
     // priority_queue<Node *, vector<Node *>, compare_min_first> Q;
 
     // using self implement pair heap other than stl priority queue
-    // pair heap is a simple implementation of fibonacci heap 
+    // pair heap is a simple implementation of fibonacci heap
     PairingHeap Q;
 
     Q.push(G->nodes[source]);

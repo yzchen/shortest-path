@@ -63,6 +63,6 @@ int main(int argc, char const *argv[]) {
         cout << "\n" << "Spfa algorithm's time is :" << ((double)(end - start)) / CLOCKS_PER_SEC << " s" << endl;
     }
 
-    print_node(G);
+    print_path(G);
     return 0;
 }

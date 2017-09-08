@@ -30,6 +30,7 @@ struct compare_min_first{
 };
 
 void print_node(Graph *G);
+void print_path(Graph *G);
 
 void Dijkstra(Graph *G, int source);
 void Spfa(Graph *G, int source);

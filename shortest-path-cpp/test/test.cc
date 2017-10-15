@@ -41,28 +41,35 @@ void construct(Graph *G) {
     (G->nodes).push_back(E);
 }
 
-int main(int argc, char const *argv[]) {
+void self_test(string algorithm_type){
+    clock_t start, end;
+
     Graph *G = new Graph();
     construct(G);
 
-    clock_t start, end;
-
-    string algorithm(argv[1]);
+    string algorithm(algorithm_type);
     if (algorithm.compare("dijstra") == 0) {
         start = clock();
         Dijkstra(G, 0);
         end = clock();
 
-        cout << "\n" << "Dijkstra algorithm's time is :" << ((double)(end - start)) / CLOCKS_PER_SEC << " s" << endl;
+        print_path(G);
+        cout << "\n" << "Dijkstra algorithm's time is : " << ((double)(end - start)) / CLOCKS_PER_SEC << " s" << "\n" << endl;
     }
     else if (algorithm.compare("spfa") == 0){
         start = clock();
         Spfa(G, 0);
         end = clock();
 
-        cout << "\n" << "Spfa algorithm's time is :" << ((double)(end - start)) / CLOCKS_PER_SEC << " s" << endl;
+        print_path(G);
+        cout << "\n" << "Spfa algorithm's time is : " << ((double)(end - start)) / CLOCKS_PER_SEC << " s" << "\n" << endl;
     }
 
-    print_path(G);
+}
+
+int main(int argc, char const *argv[]) {
+    self_test("dijstra");
+    self_test("spfa");
+
     return 0;
 }

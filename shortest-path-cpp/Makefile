@@ -1,13 +1,21 @@
 CC := clang++ -std=c++11 -g
-CFLAGS := -Iinclude -Wno-duplicate-decl-specifier
+CFLAGS := -Iinclude -Wno-duplicate-decl-specifier -Wno-parentheses
 
-all: bin/shortest_path
+all: bin/shortest_path bin/self_test
 
-bin/shortest_path: bin/shortest_path.o bin/test.o
+bin/shortest_path: bin/shortest_path.o bin/run.o
+	@mkdir -p bin
+	$(CC) $(CFLAGS) -o $@ $^
+
+bin/self_test: bin/shortest_path.o bin/test.o
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -o $@ $^
 
 bin/shortest_path.o: src/shortest_path.cc include/pairing_heap.hpp include/graph.hh
+	@mkdir -p bin
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+bin/run.o: test/run.cc include/graph.hh
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -c -o $@ $<
 

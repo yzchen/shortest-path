@@ -2,6 +2,7 @@
 #include <queue>
 #include <vector>
 #include <utility>
+#include <fstream>
 
 #include "pairing_heap.hpp"
 #include "graph.hh"
@@ -24,6 +25,7 @@ void print_pre(Node *node) {
 }
 
 void print_path(Graph *G) {
+    std::cout << '\n';
     for (vector<Node *>::iterator nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
         cout << (*nodeit)->value << " ( d : " << (*nodeit)->d << " ) : ";
         print_pre(*nodeit);
@@ -31,13 +33,25 @@ void print_path(Graph *G) {
     }
 }
 
-void Dijkstra(Graph *G, int source) {
-    vector<Node *>::iterator nodeit;
+void print_graph(Graph *G) {
+    for (vector<Node *>::iterator nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
+        std::cout << (*nodeit)->value << " : ";
+        for (vector<pair<Node*, double> >::iterator neighborsit = (*nodeit)->neighbors.begin(); neighborsit != (*nodeit)->neighbors.end(); neighborsit++) {
+            std::cout << (*neighborsit).first->value << ", ";
+        }
+        std::cout << '\n';
+    }
+}
 
-    for (nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
+void clear(Graph *G) {
+    for (vector<Node *>::iterator nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
         (*nodeit)->d = int_max;
         (*nodeit)->previous = NULL;
     }
+}
+
+void Dijkstra(Graph *G, int source) {
+    clear(G);
 
     (G->nodes)[source] -> d = 0;
     (G->nodes)[source] -> mask = 1;
@@ -55,13 +69,13 @@ void Dijkstra(Graph *G, int source) {
         Node *u = Q.top();
         Q.pop();
 
-        cout << u->value << " : " << u->d << endl;
+        // cout << u->value << " : " << u->d << endl;
 
-        for (vector<pair<Node*, int> >::iterator neighborsit = u->neighbors.begin(); neighborsit != u->neighbors.end(); neighborsit++) {
+        for (vector<pair<Node*, double> >::iterator neighborsit = u->neighbors.begin(); neighborsit != u->neighbors.end(); neighborsit++) {
             if ((*neighborsit).first->d > u->d + (*neighborsit).second) {
                 (*neighborsit).first->d = u->d + (*neighborsit).second;
                 (*neighborsit).first->previous = u;
-                cout << "  -->" << (*neighborsit).first->value << " : "<< (*neighborsit).first->d << endl;
+                // cout << "  -->" << (*neighborsit).first->value << " : "<< (*neighborsit).first->d << endl;
 
                 if (!(*neighborsit).first->mask) {
                     Q.push((*neighborsit).first);
@@ -74,12 +88,7 @@ void Dijkstra(Graph *G, int source) {
 }
 
 void Spfa(Graph *G, int source) {
-    vector<Node *>::iterator nodeit;
-
-    for (nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
-        (*nodeit)->d = int_max;
-        (*nodeit)->previous = NULL;
-    }
+    clear(G);
 
     (G->nodes)[source] -> d = 0;
     (G->nodes)[source] -> mask = 1;
@@ -94,13 +103,13 @@ void Spfa(Graph *G, int source) {
         Q.pop();
         u->mask = 0;
 
-        cout << u->value << " : " << u->d << endl;
+        // cout << u->value << " : " << u->d << endl;
 
-        for (vector<pair<Node*, int> >::iterator neighborsit = u->neighbors.begin(); neighborsit != u->neighbors.end(); neighborsit++) {
+        for (vector<pair<Node*, double> >::iterator neighborsit = u->neighbors.begin(); neighborsit != u->neighbors.end(); neighborsit++) {
             if ((*neighborsit).first->d > u->d + (*neighborsit).second) {
                 (*neighborsit).first->d = u->d + (*neighborsit).second;
                 (*neighborsit).first->previous = u;
-                cout << "  -->" << (*neighborsit).first->value << " : "<< (*neighborsit).first->d << endl;
+                // cout << "  -->" << (*neighborsit).first->value << " : "<< (*neighborsit).first->d << endl;
 
                 if (!(*neighborsit).first->mask) {
                     Q.push((*neighborsit).first);
@@ -109,5 +118,42 @@ void Spfa(Graph *G, int source) {
 
             }
         }
+    }
+}
+
+Graph *read_file(string fileName){
+    std::cout << fileName << '\n';
+    Graph *G = new Graph();
+
+    std::ifstream infile(fileName, std::ios::in);
+    if (infile.is_open()) {
+        int nNodes, nEdges;
+        infile >> nNodes >> nEdges;
+
+        std::cout << "nNodes : " << nNodes << "   nEdges : " << nEdges << endl;
+
+        G->nNodes = nNodes;
+        G->nEdges = nEdges;
+
+        for (size_t i = 0; i < nNodes; i++) {
+            Node *tmp = new Node();
+            tmp->value = to_string(i);
+            (G->nodes).push_back(tmp);
+        }
+
+        int inNode, outNode;
+        double weight;
+        for (size_t i = 0; i < nEdges; i++) {
+            infile >> inNode >> outNode >> weight;
+            (((G->nodes)[inNode])->neighbors).push_back(make_pair((G->nodes)[outNode], weight));
+        }
+
+        // print_graph(G);
+
+        return G;
+    }
+    else {
+        std::cerr << "Unable to open file\n";
+        return NULL;
     }
 }

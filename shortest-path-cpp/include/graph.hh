@@ -8,11 +8,11 @@ const int int_max = 2147483647;
 
 typedef struct Node {
     // for adjacency list
-    char value;
-    std::vector<std::pair<struct Node *, int> > neighbors;
+    std::string value;
+    std::vector<std::pair<struct Node *, double> > neighbors;
 
     // for algorithms
-    int d;
+    double d;
     Node *previous;
 
     // for spfa algorithm, if node in queue, then mask = 1, else mask = 0
@@ -21,6 +21,8 @@ typedef struct Node {
 
 typedef struct Graph {
     std::vector<Node *> nodes;
+    int nNodes;
+    int nEdges;
 } Graph;
 
 struct compare_min_first{
@@ -31,6 +33,7 @@ struct compare_min_first{
 
 void print_node(Graph *G);
 void print_path(Graph *G);
+Graph *read_file(std::string fileName);
 
 void Dijkstra(Graph *G, int source);
 void Spfa(Graph *G, int source);

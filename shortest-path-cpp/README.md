@@ -10,10 +10,10 @@
 
 - run test
 
-    - run dijkstra algorithm
+    - run self_test
 
-    `./bin/shortest_path dijkstra`
+    `./bin/self_test`
 
-    - run spfa algorithm
+    - run algorithm for dataset
 
-    `./bin/shortest_path spfa`
+    `./bin/shortest_path`

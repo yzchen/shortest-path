@@ -1,0 +1,7 @@
+fileName,nNodes,nEdges,Dijkstra,Spfa
+data/10000EWD.txt,10000,123462,0.007404,0.005128
+data/1000EWD.txt,1000,16866,0.00074,0.000374
+data/mediumEWD.txt,250,2546,0.000105,6.3e-05
+data/NYC.txt,264346,733846,0.153545,5.28173
+data/rome99.txt,3353,8870,0.001185,0.002068
+data/tinyEWD.txt,8,15,3e-06,3e-06

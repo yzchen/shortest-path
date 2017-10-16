@@ -50,6 +50,52 @@ void clear(Graph *G) {
     }
 }
 
+Node *findMin(const std::vector<Node *> &v, int &index) {
+    int minV = int_max;
+    index = -1;
+    for (size_t i = 0; i < v.size(); i++) {
+        if ((v[i])->d < minV) {
+            minV = (v[i])->d;
+            index = i;
+        }
+    }
+    if (index != -1) {
+        return v[index];
+    }
+    else {
+        return NULL;
+    }
+}
+
+void DijkstraArray(Graph *G, int source) {
+    clear(G);
+
+    (G->nodes)[source] -> d = 0;
+    (G->nodes)[source] -> mask = 1;
+
+    std::vector<Node *> v;
+    v.push_back(G->nodes[source]);
+
+    while (!v.empty()) {
+        int index = -1;
+        Node *u = findMin(v, index);
+        v.erase(v.begin() + index);
+
+        for (vector<pair<Node*, double> >::iterator neighborsit = u->neighbors.begin(); neighborsit != u->neighbors.end(); neighborsit++) {
+            if ((*neighborsit).first->d > u->d + (*neighborsit).second) {
+                (*neighborsit).first->d = u->d + (*neighborsit).second;
+                (*neighborsit).first->previous = u;
+
+                if (!(*neighborsit).first->mask) {
+                    v.push_back((*neighborsit).first);
+                    (*neighborsit).first->mask = 1;
+                }
+
+            }
+        }
+    }
+}
+
 void Dijkstra(Graph *G, int source) {
     clear(G);
 

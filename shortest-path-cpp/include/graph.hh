@@ -36,6 +36,7 @@ void print_path(Graph *G);
 Graph *read_file(std::string fileName);
 
 void Dijkstra(Graph *G, int source);
+void DijkstraArray(Graph *G, int source);
 void Spfa(Graph *G, int source);
 
 #endif

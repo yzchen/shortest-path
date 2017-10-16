@@ -13,14 +13,23 @@ void run(string fileName){
     std::ofstream outfile("output/output.csv", std::ios::out | std::ios::app);
     clock_t start, end;
 
-    //Dijkstra
+    //Dijkstra with Unordered Array
     Graph *G = read_file(fileName);
+    start = clock();
+    DijkstraArray(G, 0);
+    end = clock();
+
+    double t1 = ((double)(end - start)) / CLOCKS_PER_SEC;
+    cout << "DijkstraArray algorithm's time is : " << t1 << " s" << "\n" << endl;
+
+    //Dijkstra
+    G = read_file(fileName);
     start = clock();
     Dijkstra(G, 0);
     end = clock();
 
-    double t1 = ((double)(end - start)) / CLOCKS_PER_SEC;
-    cout << "Dijkstra algorithm's time is : " << t1 << " s" << "\n" << endl;
+    double t2 = ((double)(end - start)) / CLOCKS_PER_SEC;
+    cout << "DijkstraHeap algorithm's time is : " << t2 << " s" << "\n" << endl;
 
     // Spfa
     G = read_file(fileName);
@@ -28,10 +37,10 @@ void run(string fileName){
     Spfa(G, 0);
     end = clock();
 
-    double t2 = ((double)(end - start)) / CLOCKS_PER_SEC;
-    cout << "Spfa algorithm's time is : " << t2 << " s" << "\n" << endl;
+    double t3 = ((double)(end - start)) / CLOCKS_PER_SEC;
+    cout << "Spfa algorithm's time is : " << t3 << " s" << "\n" << endl;
 
-    outfile << fileName << "," << G->nNodes << "," << G->nEdges << "," << t1 << "," << t2 << "\n";
+    outfile << fileName << "," << G->nNodes << "," << G->nEdges << "," << t1 << "," << t2 << "," << t3 << "\n";
 
     outfile.close();
 }
@@ -44,7 +53,7 @@ void get_fileNames(string directory, std::vector<std::string> &v) {
     if (dir != NULL) {
         while (iterator = readdir(dir)) {
             string fileName(iterator->d_name);
-            if (fileName.compare(".") != 0 && fileName.compare("..") != 0) {
+            if (fileName.compare(".") != 0 && fileName.compare("..") != 0 && fileName.compare(".gitkeep") != 0) {
                 std::cout << "    " << fileName << '\n';
                 v.push_back(iterator->d_name);
             }
@@ -55,7 +64,7 @@ void get_fileNames(string directory, std::vector<std::string> &v) {
 
 int main(int argc, char const *argv[]) {
     std::ofstream outfile("output/output.csv", std::ios::out);
-    outfile << "fileName,nNodes,nEdges,Dijkstra,Spfa" << "\n";
+    outfile << "fileName,nNodes,nEdges,DijkstraArray,DijkstraHeap,Spfa" << "\n";
     outfile.close();
 
     string folder("data/");

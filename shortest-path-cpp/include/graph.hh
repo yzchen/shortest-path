@@ -31,10 +31,17 @@ struct compare_min_first{
     }
 };
 
+// tools.cc
 void print_node(Graph *G);
+void print_pre(Node *node);
 void print_path(Graph *G);
+void print_graph(Graph *G);
+void clear(Graph *G);
+Node *findMin(const std::vector<Node *> &v, int &index);
+void pre_sort(Graph *G);
 Graph *read_file(std::string fileName);
 
+// shortest-path.cc
 void Dijkstra(Graph *G, int source);
 void DijkstraArray(Graph *G, int source);
 void Spfa(Graph *G, int source);

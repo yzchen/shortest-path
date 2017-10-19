@@ -39,6 +39,8 @@ void construct(Graph *G) {
     (G->nodes).push_back(C);
     (G->nodes).push_back(D);
     (G->nodes).push_back(E);
+
+    pre_sort(G);
 }
 
 void self_test(string algorithm_type){
@@ -46,6 +48,7 @@ void self_test(string algorithm_type){
 
     Graph *G = new Graph();
     construct(G);
+    print_graph(G);
 
     string algorithm(algorithm_type);
     if (algorithm.compare("dijstraArray") == 0) {

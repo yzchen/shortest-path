@@ -9,12 +9,16 @@
 
 using namespace std;
 
-void run(string fileName){
+void run(string fileName) {
     std::ofstream outfile("output/output.csv", std::ios::out | std::ios::app);
     clock_t start, end;
 
     //Dijkstra with Unordered Array
-    Graph *G = read_file(fileName);
+    Graph *G = readFile(fileName);
+    if (!G) {
+        return;
+    }
+
     start = clock();
     DijkstraArray(G, 0);
     end = clock();
@@ -23,7 +27,11 @@ void run(string fileName){
     cout << "DijkstraArray algorithm's time is : " << t1 << " s" << "\n" << endl;
 
     //Dijkstra
-    G = read_file(fileName);
+    G = readFile(fileName);
+    if (!G) {
+        return;
+    }
+
     start = clock();
     Dijkstra(G, 0);
     end = clock();
@@ -32,7 +40,11 @@ void run(string fileName){
     cout << "DijkstraHeap algorithm's time is : " << t2 << " s" << "\n" << endl;
 
     // Spfa
-    G = read_file(fileName);
+    G = readFile(fileName);
+    if (!G) {
+        return;
+    }
+
     start = clock();
     Spfa(G, 0);
     end = clock();
@@ -45,7 +57,7 @@ void run(string fileName){
     outfile.close();
 }
 
-void get_fileNames(string directory, std::vector<std::string> &v) {
+void getFileNames(string directory, std::vector<std::string> &v) {
     std::cout << "files in data/ : " << '\n';
     DIR *dir = opendir(directory.c_str());
     struct dirent *iterator;
@@ -70,7 +82,7 @@ int main(int argc, char const *argv[]) {
     string folder("data/");
 
     std::vector<string> v;
-    get_fileNames(folder, v);
+    getFileNames(folder, v);
 
     for (std::vector<string>::iterator vit = v.begin(); vit != v.end(); vit++){
         run(folder + *vit);

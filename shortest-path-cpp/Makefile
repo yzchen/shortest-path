@@ -1,13 +1,17 @@
 CC := clang++ -std=c++11 -g
 CFLAGS := -Iinclude -Wno-duplicate-decl-specifier -Wno-parentheses
 
-all: bin/shortest_path bin/self_test
+all: bin/shortest_path bin/self_test bin/repl_test
 
 bin/shortest_path: bin/tools.o bin/shortest_path.o bin/run.o
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -o $@ $^
 
 bin/self_test: bin/tools.o bin/shortest_path.o bin/test.o
+	@mkdir -p bin
+	$(CC) $(CFLAGS) -o $@ $^
+
+bin/repl_test: bin/tools.o bin/shortest_path.o bin/repl.o
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -o $@ $^
 
@@ -24,6 +28,10 @@ bin/run.o: test/run.cc include/graph.hh
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 bin/test.o: test/test.cc include/graph.hh
+	@mkdir -p bin
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+bin/repl.o: test/repl.cc include/graph.hh
 	@mkdir -p bin
 	$(CC) $(CFLAGS) -c -o $@ $<
 

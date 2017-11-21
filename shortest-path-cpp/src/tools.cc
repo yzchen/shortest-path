@@ -1,36 +1,45 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <limits>
 
 #include "graph.hh"
 
 using namespace std;
 
-void print_node(Graph *G) {
-    cout << "\n" << "Final path length : " << "\n";
-    for (vector<Node *>::iterator nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
-        cout << (*nodeit)->value << " : " << (*nodeit)->d << "\n";
-    }
-}
-
-void print_pre(Node *node) {
+static void printPre(Node *node) {
     if (node->previous != NULL) {
-        print_pre(node->previous);
+        printPre(node->previous);
         cout << " -> ";
     }
     cout << node->value;
 }
 
-void print_path(Graph *G) {
-    std::cout << '\n';
+// void printNode(Graph *G) {
+//     cout << "\n" << "Final path length : " << "\n";
+//     for (vector<Node *>::iterator nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
+//         cout << (*nodeit)->value << " : " << (*nodeit)->d << "\n";
+//     }
+// }
+
+void printPath(Graph *G) {
+    int cntInfinity = 0;
+    std::cout << '\n' << "Path from nodes[0] to all other nodes :\n";
     for (vector<Node *>::iterator nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
+        if ((*nodeit)->d == numeric_limits<double>::max()) {
+            cntInfinity++;
+            continue;
+        }
         cout << (*nodeit)->value << " ( d : " << (*nodeit)->d << " ) : ";
-        print_pre(*nodeit);
+        printPre(*nodeit);
         cout<<endl;
     }
+
+    std::cout << "\n" << "unreached nodes : " << cntInfinity << endl;
 }
 
-void print_graph(Graph *G) {
+void printGraph(Graph *G) {
+    std::cout << "\nGraph showed in adjacency list : " << '\n';
     for (vector<Node *>::iterator nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
         std::cout << (*nodeit)->value << " : ";
         for (vector<pair<Node*, double> >::iterator neighborsit = (*nodeit)->neighbors.begin(); neighborsit != (*nodeit)->neighbors.end(); neighborsit++) {
@@ -42,13 +51,13 @@ void print_graph(Graph *G) {
 
 void clear(Graph *G) {
     for (vector<Node *>::iterator nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
-        (*nodeit)->d = int_max;
+        (*nodeit)->d = numeric_limits<double>::max();
         (*nodeit)->previous = NULL;
     }
 }
 
 Node *findMin(const std::vector<Node *> &v, int &index) {
-    int minV = int_max;
+    double minV = numeric_limits<double>::max();
     index = -1;
     for (size_t i = 0; i < v.size(); i++) {
         if ((v[i])->d < minV) {
@@ -64,18 +73,18 @@ Node *findMin(const std::vector<Node *> &v, int &index) {
     }
 }
 
-bool less_weight(const pair<Node*, double> &m1, const pair<Node*, double> &m2) {
+bool lessWeight(const pair<Node*, double> &m1, const pair<Node*, double> &m2) {
         return m1.second < m2.second;
 }
 
-void pre_sort(Graph *G) {
+void preSort(Graph *G) {
     for (vector<Node *>::iterator nodeit = G->nodes.begin(); nodeit != G->nodes.end(); nodeit++) {
-        sort((*nodeit)->neighbors.begin(), (*nodeit)->neighbors.end(), less_weight);
+        sort((*nodeit)->neighbors.begin(), (*nodeit)->neighbors.end(), lessWeight);
     }
 }
 
-Graph *read_file(string fileName){
-    std::cout << fileName << '\n';
+Graph *readFile(string fileName) {
+    std::cout << "fileName : " << fileName << '\n';
     Graph *G = new Graph();
 
     std::ifstream infile(fileName, std::ios::in);
@@ -108,9 +117,8 @@ Graph *read_file(string fileName){
         // pre_sort(G);
 
         return G;
-    }
-    else {
-        std::cerr << "Unable to open file\n";
+    } else {
+        std::cerr << "Unable to open file " + fileName + "\n";
         return NULL;
     }
 }

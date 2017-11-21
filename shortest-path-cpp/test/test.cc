@@ -40,15 +40,15 @@ void construct(Graph *G) {
     (G->nodes).push_back(D);
     (G->nodes).push_back(E);
 
-    pre_sort(G);
+    preSort(G);
 }
 
-void self_test(string algorithm_type){
+void selfTest(string algorithm_type){
     clock_t start, end;
 
     Graph *G = new Graph();
     construct(G);
-    print_graph(G);
+    printGraph(G);
 
     string algorithm(algorithm_type);
     if (algorithm.compare("dijstraArray") == 0) {
@@ -56,7 +56,7 @@ void self_test(string algorithm_type){
         DijkstraArray(G, 0);
         end = clock();
 
-        print_path(G);
+        printPath(G);
         cout << "\n" << "DijkstraArray algorithm's time is : " << ((double)(end - start)) / CLOCKS_PER_SEC << " s" << "\n" << endl;
     }
     else if (algorithm.compare("dijstra") == 0) {
@@ -64,7 +64,7 @@ void self_test(string algorithm_type){
         Dijkstra(G, 0);
         end = clock();
 
-        print_path(G);
+        printPath(G);
         cout << "\n" << "DijkstraHeap algorithm's time is : " << ((double)(end - start)) / CLOCKS_PER_SEC << " s" << "\n" << endl;
     }
     else if (algorithm.compare("spfa") == 0){
@@ -72,16 +72,16 @@ void self_test(string algorithm_type){
         Spfa(G, 0);
         end = clock();
 
-        print_path(G);
+        printPath(G);
         cout << "\n" << "Spfa algorithm's time is : " << ((double)(end - start)) / CLOCKS_PER_SEC << " s" << "\n" << endl;
     }
 
 }
 
 int main(int argc, char const *argv[]) {
-    self_test("dijstraArray");
-    self_test("dijstra");
-    self_test("spfa");
+    selfTest("dijstraArray");
+    selfTest("dijstra");
+    selfTest("spfa");
 
     return 0;
 }

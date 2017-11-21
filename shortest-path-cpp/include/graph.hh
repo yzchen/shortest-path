@@ -4,8 +4,6 @@
 #include <vector>
 #include <utility>
 
-const int int_max = 2147483647;
-
 typedef struct Node {
     // for adjacency list
     std::string value;
@@ -25,21 +23,19 @@ typedef struct Graph {
     int nEdges;
 } Graph;
 
-struct compare_min_first{
+struct compareMinFirst {
     bool operator ()(Node *a, Node *b){
         return a->d > b->d; //最小值优先
     }
 };
 
 // tools.cc
-void print_node(Graph *G);
-void print_pre(Node *node);
-void print_path(Graph *G);
-void print_graph(Graph *G);
+void printPath(Graph *G);
+void printGraph(Graph *G);
 void clear(Graph *G);
 Node *findMin(const std::vector<Node *> &v, int &index);
-void pre_sort(Graph *G);
-Graph *read_file(std::string fileName);
+void preSort(Graph *G);
+Graph *readFile(std::string fileName);
 
 // shortest-path.cc
 void Dijkstra(Graph *G, int source);

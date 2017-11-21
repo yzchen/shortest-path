@@ -6,5 +6,6 @@ spfa
 shortest-path-cpp/data/*.txt
 shortest-path-cpp/bin/shortest_path
 shortest-path-cpp/bin/self_test
+shortest-path-cpp/bin/repl_test
 shortest-path-scala/project
 shortest-path-scala/target

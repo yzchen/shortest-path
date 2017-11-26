@@ -9,25 +9,29 @@
 
 using namespace std;
 
-void run(string fileName) {
-    std::ofstream outfile("output/output.csv", std::ios::out | std::ios::app);
+vector<string> splitString(string data, char splitCh) {
+    vector<string> v;
+
+    string tmp("");
+    for (string::iterator it = data.begin(); it != data.end(); ++it) {
+        if (*it == splitCh) {
+            v.push_back(tmp);
+            tmp = "";
+        } else {
+            tmp.push_back(*it);
+        }
+    }
+    v.push_back(tmp);
+
+    return v;
+}
+
+void run(string fileName, int dataset) {
+    std::ofstream outfile("output/output_" + to_string(dataset) + ".csv", std::ios::out | std::ios::app);
     clock_t start, end;
 
-    //Dijkstra with Unordered Array
-    Graph *G = readFile(fileName);
-    if (!G) {
-        return;
-    }
-
-    start = clock();
-    DijkstraArray(G, 0);
-    end = clock();
-
-    double t1 = ((double)(end - start)) / CLOCKS_PER_SEC;
-    cout << "DijkstraArray algorithm's time is : " << t1 << " s" << "\n" << endl;
-
     //Dijkstra
-    G = readFile(fileName);
+    Graph *G = readFile(fileName);
     if (!G) {
         return;
     }
@@ -52,13 +56,32 @@ void run(string fileName) {
     double t3 = ((double)(end - start)) / CLOCKS_PER_SEC;
     cout << "Spfa algorithm's time is : " << t3 << " s" << "\n" << endl;
 
-    outfile << fileName << "," << G->nNodes << "," << G->nEdges << "," << t1 << "," << t2 << "," << t3 << "\n";
+    vector<string> filePaths = splitString(fileName, '/');
+    string pureFileName = filePaths[filePaths.size() - 1];
+    outfile << pureFileName << "," << G->nNodes << "," << G->nEdges << "," << t2 << "," << t3 << "\n";
 
     outfile.close();
 }
 
-void getFileNames(string directory, std::vector<std::string> &v) {
+void getSubfolders(string directory, vector<string> &v) {
     std::cout << "files in data/ : " << '\n';
+    DIR *dir = opendir(directory.c_str());
+    struct dirent *iterator;
+
+    if (dir != NULL) {
+        while (iterator = readdir(dir)) {
+            string subFolder(iterator->d_name);
+            if (subFolder.compare(".") != 0 && subFolder.compare("..") != 0 && subFolder.compare(".gitkeep") != 0) {
+                std::cout << "    " << subFolder << '\n';
+                v.push_back(subFolder + "/");
+            }
+        }
+    }
+    std::cout << endl;
+}
+
+void getFileNames(string directory, vector<string> &v) {
+    std::cout << "files in " + directory + "/ : " << '\n';
     DIR *dir = opendir(directory.c_str());
     struct dirent *iterator;
 
@@ -67,7 +90,7 @@ void getFileNames(string directory, std::vector<std::string> &v) {
             string fileName(iterator->d_name);
             if (fileName.compare(".") != 0 && fileName.compare("..") != 0 && fileName.compare(".gitkeep") != 0) {
                 std::cout << "    " << fileName << '\n';
-                v.push_back(iterator->d_name);
+                v.push_back(fileName);
             }
         }
     }
@@ -75,17 +98,19 @@ void getFileNames(string directory, std::vector<std::string> &v) {
 }
 
 int main(int argc, char const *argv[]) {
-    std::ofstream outfile("output/output.csv", std::ios::out);
-    outfile << "fileName,nNodes,nEdges,DijkstraArray(s),DijkstraHeap(s),Spfa(s)" << "\n";
-    outfile.close();
-
     string folder("data/");
 
-    std::vector<string> v;
-    getFileNames(folder, v);
+    std::vector<string> folders, v;
+    getSubfolders(folder, folders);
+    for (int i = 0; i < folders.size(); i++) {
+        std::ofstream outfile("output/output_" + to_string(i+1) + ".csv", std::ios::out);
+        outfile << "fileName,nNodes,nEdges,Dijkstra,Spfa" << "\n";
+        outfile.close();
+        getFileNames(folder + folders[i], v);
 
-    for (std::vector<string>::iterator vit = v.begin(); vit != v.end(); vit++){
-        run(folder + *vit);
+        for (vector<string>::iterator vit = v.begin(); vit != v.end(); vit++){
+            run(folder + folders[i] + *vit, i + 1);
+        }
     }
 
     return 0;

@@ -9,3 +9,4 @@ shortest-path-cpp/bin/self_test
 shortest-path-cpp/bin/repl_test
 shortest-path-scala/project
 shortest-path-scala/target
+.ipynb_checkpoints

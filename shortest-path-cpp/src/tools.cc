@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <algorithm>
 #include <limits>
 
 #include "graph.hh"
@@ -106,8 +107,9 @@ Graph *readFile(string fileName) {
         int inNode, outNode;
         double weight;
         for (size_t i = 0; i < nEdges; i++) {
+//            cout << "line number :" << i <<"\n";
             infile >> inNode >> outNode >> weight;
-            (((G->nodes)[inNode])->neighbors).push_back(make_pair((G->nodes)[outNode], weight));
+            (((G->nodes)[inNode-1])->neighbors).push_back(make_pair((G->nodes)[outNode-1], weight));
         }
 
         // print_graph(G);

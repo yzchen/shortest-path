@@ -76,7 +76,7 @@ void getFileNames(string directory, std::vector<std::string> &v) {
 
 int main(int argc, char const *argv[]) {
     std::ofstream outfile("output/output.csv", std::ios::out);
-    outfile << "fileName,nNodes,nEdges,DijkstraArray,DijkstraHeap,Spfa" << "\n";
+    outfile << "fileName,nNodes,nEdges,DijkstraArray(s),DijkstraHeap(s),Spfa(s)" << "\n";
     outfile.close();
 
     string folder("data/");

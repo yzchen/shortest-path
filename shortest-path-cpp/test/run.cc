@@ -37,11 +37,24 @@ void run(string fileName, int dataset) {
     }
 
     start = clock();
+    DijkstraHeap(G, 0);
+    end = clock();
+
+    double t1 = ((double)(end - start)) / CLOCKS_PER_SEC;
+    cout << "Dijkstra Normal Heap algorithm's time is : " << t1 << " s" << "\n" << endl;
+
+    //Dijkstra
+    G = readFile(fileName);
+    if (!G) {
+        return;
+    }
+
+    start = clock();
     Dijkstra(G, 0);
     end = clock();
 
     double t2 = ((double)(end - start)) / CLOCKS_PER_SEC;
-    cout << "DijkstraHeap algorithm's time is : " << t2 << " s" << "\n" << endl;
+    cout << "Dijkstra Pairing Heap algorithm's time is : " << t2 << " s" << "\n" << endl;
 
     // Spfa
     G = readFile(fileName);
@@ -58,7 +71,7 @@ void run(string fileName, int dataset) {
 
     vector<string> filePaths = splitString(fileName, '/');
     string pureFileName = filePaths[filePaths.size() - 1];
-    outfile << pureFileName << "," << G->nNodes << "," << G->nEdges << "," << t2 << "," << t3 << "\n";
+    outfile << pureFileName << "," << G->nNodes << "," << G->nEdges << "," << t1 << "," << t2 << "," << t3 << "\n";
 
     outfile.close();
 }
@@ -71,7 +84,7 @@ void getSubfolders(string directory, vector<string> &v) {
     if (dir != NULL) {
         while (iterator = readdir(dir)) {
             string subFolder(iterator->d_name);
-            if (subFolder.compare(".") != 0 && subFolder.compare("..") != 0 && subFolder.compare(".gitkeep") != 0) {
+            if (subFolder.compare(".") != 0 && subFolder.compare("..") != 0 && subFolder.compare(".gitkeep") != 0 && subFolder.compare(".DS_Store") != 0) {
                 std::cout << "    " << subFolder << '\n';
                 v.push_back(subFolder + "/");
             }
@@ -88,7 +101,7 @@ void getFileNames(string directory, vector<string> &v) {
     if (dir != NULL) {
         while (iterator = readdir(dir)) {
             string fileName(iterator->d_name);
-            if (fileName.compare(".") != 0 && fileName.compare("..") != 0 && fileName.compare(".gitkeep") != 0) {
+            if (fileName.compare(".") != 0 && fileName.compare("..") != 0 && fileName.compare(".gitkeep") != 0 && fileName.compare(".DS_Store") != 0) {
                 std::cout << "    " << fileName << '\n';
                 v.push_back(fileName);
             }
@@ -104,7 +117,7 @@ int main(int argc, char const *argv[]) {
     getSubfolders(folder, folders);
     for (int i = 0; i < folders.size(); i++) {
         std::ofstream outfile("output/output_" + to_string(i+1) + ".csv", std::ios::out);
-        outfile << "fileName,nNodes,nEdges,Dijkstra,Spfa" << "\n";
+        outfile << "fileName,nNodes,nEdges,DijkstraHeap,DijkstraPairing,Spfa" << "\n";
         outfile.close();
         getFileNames(folder + folders[i], v);
 

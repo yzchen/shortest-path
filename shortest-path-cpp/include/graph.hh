@@ -39,7 +39,7 @@ Graph *readFile(std::string fileName);
 
 // shortest-path.cc
 void Dijkstra(Graph *G, int source);
-void DijkstraArray(Graph *G, int source);
+void DijkstraHeap(Graph *G, int source);
 void Spfa(Graph *G, int source);
 
 #endif

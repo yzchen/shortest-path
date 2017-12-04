@@ -51,9 +51,9 @@ void selfTest(string algorithm_type){
     printGraph(G);
 
     string algorithm(algorithm_type);
-    if (algorithm.compare("dijstraArray") == 0) {
+    if (algorithm.compare("dijstraHeap") == 0) {
         start = clock();
-        DijkstraArray(G, 0);
+        DijkstraHeap(G, 0);
         end = clock();
 
         printPath(G);
@@ -79,7 +79,7 @@ void selfTest(string algorithm_type){
 }
 
 int main(int argc, char const *argv[]) {
-    selfTest("dijstraArray");
+    selfTest("dijstraHeap");
     selfTest("dijstra");
     selfTest("spfa");
 
